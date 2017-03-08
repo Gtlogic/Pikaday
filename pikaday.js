@@ -520,7 +520,7 @@
                 date = new Date(Date.parse(opts.field.value));
             }
             if (isDate(date)) {
-              self.setDate(date);
+              self.setDate(date, false, true);
             }
             if (!self._v) {
                 self.show();
@@ -734,7 +734,7 @@
         /**
          * set the current selection
          */
-        setDate: function(date, preventOnSelect)
+        setDate: function(date, preventOnSelect, isOnChange)
         {
             if (!date) {
                 this._d = null;
@@ -762,9 +762,11 @@
                 date = max;
             }
 
-            this._d = new Date(date.getTime());
-            setToStartOfDay(this._d);
-            this.gotoDate(this._d);
+            if (!this._d || this._d.getTime() !== date.getTime()) {
+              this._d = new Date(date.getTime());
+              setToStartOfDay(this._d);
+              this.gotoDate(this._d, isOnChange);
+            }
 
             if (this._o.field) {
                 this._o.field.value = this.toString();
@@ -778,7 +780,7 @@
         /**
          * change view to a specific date
          */
-        gotoDate: function(date)
+        gotoDate: function(date, isOnChange)
         {
             var newCalendar = true;
 
@@ -806,7 +808,7 @@
                 }
             }
 
-            this.adjustCalendars();
+            this.adjustCalendars(isOnChange);
         },
 
         adjustDate: function(sign, days) {
@@ -833,7 +835,7 @@
             this.setDate(newDay);
         },
 
-        adjustCalendars: function() {
+        adjustCalendars: function(skipDraw) {
             this.calendars[0] = adjustCalendar(this.calendars[0]);
             for (var c = 1; c < this._o.numberOfMonths; c++) {
                 this.calendars[c] = adjustCalendar({
@@ -841,7 +843,9 @@
                     year: this.calendars[0].year
                 });
             }
-            this.draw();
+            if (!skipDraw) {
+              this.draw();
+            }
         },
 
         gotoToday: function()
@@ -981,7 +985,7 @@
             if (typeof this._o.onDraw === 'function') {
                 this._o.onDraw(this);
             }
-            
+
             if (opts.bound) {
                 // let the screen reader user know to use arrow keys
                 opts.field.setAttribute('aria-label', 'Use the arrow keys to pick a date');
