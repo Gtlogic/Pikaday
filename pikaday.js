@@ -1177,6 +1177,7 @@
             removeEvent(this.el, 'mousedown', this._onMouseDown, true);
             removeEvent(this.el, 'touchend', this._onMouseDown, true);
             removeEvent(this.el, 'change', this._onChange);
+            removeEvent(document, 'keydown', this._onKeyChange);
             if (this._o.field) {
                 removeEvent(this._o.field, 'change', this._onInputChange);
                 if (this._o.bound) {
