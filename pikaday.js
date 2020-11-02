@@ -987,7 +987,8 @@
                 /**
                  * The focus here is not always desirable because it refocuses on the pikaday input upon tabbing while what
                  * we want is to move to the next field. We can skip the focus since we aren't using keyboard input;
-                 * however, in case we want to enable keyboard input in the future, we should change this.
+                 * however, in case we want to enable keyboard input in the future, we should create a new component
+                 * where we do not pass true to `skipFocus`.
                  */
                 if(opts.field.type !== 'hidden' && !opts.skipFocus) {
                     sto(function() {
