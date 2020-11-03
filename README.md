@@ -104,6 +104,7 @@ Pikaday has many useful options:
 * `onClose` callback function for when the picker is hidden
 * `onDraw` callback function for when the picker draws a new month
 * `keyboardInput` enable keyboard input support (default `true`)
+* `skipFocus` stop focus from being triggered (default: `false`)
 
 ## jQuery Plugin
 
